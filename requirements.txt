@@ -1,0 +1,6 @@
+ipaddress==1.0.23
+pycodestyle==2.5.0
+pydocstyle==5.0.2
+pylint==2.4.4
+PyYAML==5.3
+simple-yaml==0.1.0

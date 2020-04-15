@@ -1,0 +1,194 @@
+basic:
+    - script_file: '../basics.ios'
+    - server_ip: '192.168.0.101'
+    - password: 'cisco'
+
+networks:
+    - NORTE:
+        - address: 172.18.0.0/16
+        - subnets:
+            - NORTE1/30
+            - NORTE2/30
+            - NORTE3/30
+            - NORTE4/30
+            - NORTE5/30
+    - SUL:
+        - address: 172.16.0.0/16
+        - subnets:
+            - SUL1/30
+            - SUL2/30
+            - SUL3/30
+            - SUL4/30
+
+    - BACKBONE:
+        - address: 10.0.0.0/16
+        - subnets:
+            - BACKBONE1/30
+            - BACKBONE2/30
+
+    - LINUX:
+        - address: 192.168.0.0/16
+        - subnets:
+            - LINUX1/24
+            - LINUX2/24
+
+
+routers:
+    - NORTE1A:
+        gns_port: 5002
+        ios: 'C7200'
+        scope: 'NORTE'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX1/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/0:
+                ip: NORTE1/30
+                description: CONEXAO COM NORTE1E
+            - Ethernet1/1: 
+                ip: NORTE2/30
+                description: CONEXAO COM NORTE2E
+            - Ethernet1/2:
+                ip: NORTE3/30
+                description: CONEXAO COM NORTE3E
+            - Ethernet1/5: 
+                ip: NORTE4/30
+                description: CONEXAO COM NORTE1C
+        script_file: './cisco/NORTE1A.ios'
+
+    - NORTE1C:
+        gns_port: 5012
+        ios: 'C7200'
+        scope: 'NORTE'
+        network:
+            - Ethernet1/6: 
+                ip: BACKBONE1/30
+                description: CONEXAO COM SUL1C
+            - Ethernet1/7: 
+                ip: BACKBONE2/30
+                description: CONEXAO COM SUL1C
+        script_file: './cisco/NORTE1C.ios'
+
+
+    - NORTE1E:
+        gns_port: 5011
+        ios: 'C7200'
+        scope: 'NORTE'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX1/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/0:
+                ip: NORTE1/30
+                description: CONEXAO COM NORTE1A
+        script_file: './cisco/NORTE1E.ios'
+
+    - NORTE2E:
+        gns_port: 5027
+        ios: 'C7200'
+        scope: 'NORTE'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX1/24
+                description: CONEXAO COM LINUX 
+            - Ethernet1/1:
+                ip: NORTE2/30
+                description: CONEXAO COM NORTE1A
+        script_file: './cisco/NORTE2E.ios'
+
+    - NORTE3E:
+        gns_port: 5028
+        ios: 'C7200'
+        scope: 'NORTE'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX1/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/1:
+                ip: NORTE3/30
+                description: CONEXAO COM  NORTE1A
+        script_file: './cisco/NORTE3E.ios'
+
+    - SUL1C:
+        gns_port: 5006
+        ios: 'C7200'
+        scope: 'SUL'
+        network:
+            - Ethernet1/6: 
+                ip: BACKBONE1/30
+                description: CONEXAO COM NORTE1C
+            - Ethernet1/7: 
+                ip: BACKBONE2/30
+                description: CONEXAO COM NORTE1C 
+        script_file: './cisco/SUL1C.ios'
+
+    - SUL1E:
+        gns_port: 5000
+        ios: 'C7200'
+        scope: 'SUL'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX2/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/0: 
+                ip: SUL1/30
+                description: CONEXAO COM SUL1A 
+        script_file: './cisco/SUL1E.ios'
+
+    - SUL2E:
+        gns_port: 5007
+        ios: 'C7200'
+        scope: 'SUL'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX2/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/0:
+                ip: SUL2/30
+                description: CONEXAO COM SUL2A
+        script_file: './cisco/SUL2E.ios'
+
+    - SUL1A:
+        gns_port: 5010
+        ios: 'C7200'
+        scope: 'SUL'
+        network:
+            - Ethernet1/0:
+                ip: SUL1/30
+                description: CONEXAO COM SUL1E
+            - Ethernet1/6:
+                ip: SUL3/30
+                description: CONEXAO COM SUL2A 
+        script_file: './cisco/SUL1A.ios'
+
+    - SUL2A:
+        gns_port: 5009
+        ios: 'C7200'
+        scope: 'SUL'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX2/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/0:
+                ip: SUL2/30
+                description: CONEXAO COM SUL2E
+            - Ethernet1/1:
+                ip: SUL4/30
+                description: CONEXAO COM SUL4E
+            - Ethernet1/6:
+                ip: SUL3/30
+                description: CONEXAO COM SUL1A
+        script_file: './cisco/SUL2A1.ios'
+
+    - SUL4E:
+        gns_port: 5008
+        ios: 'C7200'
+        scope: 'SUL'
+        network:
+            - FastEthernet0/0:
+                ip: LINUX2/24
+                description: CONEXAO COM LINUX
+            - Ethernet1/1:
+                ip: SUL4/30
+                description: CONEXAO COM SUL2A
+        script_file: './cisco/SUL4E.ios'

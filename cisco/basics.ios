@@ -1,0 +1,17 @@
+
+
+enable
+conf t
+hostname {%hostname%}
+banner motd <ACCESS DENIED, THIS ATTEMPT TO ACCESS HAS BEEN RECORDED!!<
+enable secret {%password%}
+line console 0
+password {%password%}
+login
+loggin synchronous
+line vty 0 4
+password {%password%}
+login
+loggin synchronous
+service password-encryption
+no ip domain-lookup
