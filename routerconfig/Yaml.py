@@ -2,8 +2,6 @@
 
 import yaml
 
-from .Router import Router
-
 
 class YamlReader:
 
@@ -18,3 +16,12 @@ class YamlReader:
         self.networks = YamlReader.config_routers['networks']
 
         YamlReader.routers_yaml.close()
+
+    def get_debug(self):
+        """ Retorna valor booleano de debug."""
+
+        return self.basic[3]['debug']
+        
+if __name__ == "__main__":
+    y = YamlReader()
+    y.get_debug()

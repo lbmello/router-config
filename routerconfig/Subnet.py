@@ -16,8 +16,7 @@ class Subnet:
         self.name = name
         self.local_mask = local_mask
         self.local_address = local_address
-        print(f'criada a subnet de {self.name} com endereço {self.local_address}')
-
+        
         self.subnet_queue = Queue()
         
         self.network_obj = ipaddress.IPv4Network((f'{self.local_address}/{self.local_mask}'))
@@ -35,3 +34,8 @@ class Subnet:
         """Retorna primeiro endereço valido da fila."""
         
         return self.subnet_queue.pop()
+
+    def get_debug(self):
+        """ Retorna string com o resultado da criacao das subnets."""
+
+        return f'SUBNET: Criada a subnet {self.name} com endereço de rede {self.local_address}/{self.local_mask}.'

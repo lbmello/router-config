@@ -5,20 +5,10 @@ from .routerconfig import Telnet
 from .routerconfig import NetworkData, Network
 from .routerconfig import Scope
 from .routerconfig import Subnet
-
-debug = True
+from .routerconfig.Utils import debug_mode
 
 # Leitura dos arquivos e instância dos roteadores
 yaml = YamlReader()
-
-
-def debug_mode(info):
-    """ Quando o variável debug está setada em True, este método printa as saídas de cada passo em tela."""
-
-    if debug == True:
-        print(info)
-        return True
-
 
 def create_routers():
     """ Lê os dados no arquivo YAML e instancia cada roteador."""
@@ -57,7 +47,7 @@ for scope_obj in scope_objs:
 
         subnets.append(_sn_obj)
     
-        print(_sn_obj.name)
+        debug_mode(_sn_obj.get_debug())
 
 
 '''norte = scope_objs[0]
@@ -75,6 +65,7 @@ subnet_sul.ip_calculator()
 
 # Execução dos processos em cada router
 for router in routers_objs:
+    debug_mode('')
     debug_mode(f'***** Roteador {router.nome} *****')
     
     # Aplica as configurações básicas nos scripts dos routers
@@ -95,7 +86,7 @@ for router in routers_objs:
                 
                 if inter.full_ip == sn.name:
 
-                    print(f'Interface {inter.name} rererente ao roteador {nw_norte.router.nome} sendo configurada')
+                    debug_mode(f'ROUTER_CONFIG: Interface {inter.name} rererente ao roteador {nw_norte.router.nome} sendo configurada')
 
                     _ip = sn.get_ip()
                     _mask = sn.local_mask
@@ -110,7 +101,7 @@ for router in routers_objs:
 
                 if inter.full_ip == sn.name:
 
-                    print(f'Interface {inter.name} rererente ao roteador {nw_sul.router.nome} sendo configurada')
+                    debug_mode(f'ROUTER_CONFIG: Interface {inter.name} rererente ao roteador {nw_sul.router.nome} sendo configurada')
 
                     _ip = sn.get_ip()
                     _mask = sn.local_mask
