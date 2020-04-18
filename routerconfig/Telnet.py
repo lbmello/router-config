@@ -53,7 +53,7 @@ class Telnet:
         if self.telnet:
             self.telnet.close()
 
-            return f'TELNET: sessão telnet encerrada em {self.router}.'
+            return f'TELNET: Sessão telnet encerrada em {self.router}.'
         
         else:
-            return f'TELNET: sessão já finalizada em {self.router}.'
+            return f'TELNET: Sessão já finalizada em {self.router}.'

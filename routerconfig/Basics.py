@@ -64,15 +64,17 @@ class Basics:
         basics_script = Basics.replace_vars(itter_list=basics_script, pattern='{%hostname%}', replace=self.router.nome)
         basics_script = Basics.replace_vars(itter_list=basics_script, pattern='{%password%}', replace=Basics.get_default_password())
 
-        router_configfile = open(f'router-config/cisco/{self.router.nome}.ios', 'w')
+        _path = f'router-config/cisco/{self.router.nome}.ios'
+
+        router_configfile = open(_path, 'w')
 
         # Gravacao dos dados nos arquivos de cada router em cisco/
         try:
             for line in basics_script:
                 router_configfile.write(line)
             
-            return f'BASICS: arquivo de conf de {self.router.nome} criado com sucesso.'
+            return f'BASICS: Arquivo de configuracao de {self.router.nome} criado com sucesso em {_path}.'
         
-        except: f'BASICS: Erro na configuracao do arquivo de {self.router.nome}!'
+        except: f'BASICS: Erro na configuracao do arquivo de {self.router.nome} em {_path}!'
 
         router_configfile.close()
