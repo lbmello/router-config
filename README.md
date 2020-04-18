@@ -1,6 +1,6 @@
 ## Introdução
 
-A ferramenta auxilia na configuração básica de equipamentos de rede emulados no GNS3 ou EVE-NG.
+A ferramenta auxilia na configuração básica de equipamentos de rede, emulados no GNS3 ou EVE-NG.
 
 
 ## Pré Requisitos
@@ -11,28 +11,46 @@ A ferramenta auxilia na configuração básica de equipamentos de rede emulados 
 
 ### Instalação das Dependências
 Para instalação do PyYaml e do ipaddress utilizaremos o gerenciador de pacotes [PIP3](https://pip.pypa.io/en/stable/):
+
 ```sh 
 pip3 install PyYaml
 pip3 install ipaddress
 ```
-Ou simplesmente importaremos o [arquivo]() que configura o ambiente:
+Ou simplesmente importaremos o [arquivo](https://github.com/lbmello/router-config/blob/master/requirements.txt) que configura o ambiente:
 ```sh 
 pip3 install -r requirements.txt
 ```
 
 
 ## Config.YAML
-Arquivo de configuração onde os parâmetros de cada escopo de rede sub-rede e equipamento são definidos.
+Arquivo de configuração onde os parâmetros de cada escopo de rede, sub-rede e equipamentos são definidos.
 
-Sua localização padrão é na raiz do projeto, sempre com nome 'routers.yaml'.
+Sua localização padrão é na raiz do projeto, sempre com nome `routers.yaml`.
 
-Este arquivo é dividido em três partes principais, `basic`, `network` e `routers`.
+**Este arquivo é dividido em três partes principais, `basic`, `network` e `routers`.**
 
-Obs: Todas as configurações usadas no exemplo seguem o seguinte laboratório:
+
+Obs: Todas as configurações usadas de exemplo, seguem o seguinte laboratório:
 
 ![laboratorio GNS3](lab.png)
 
 ### Basic
+
+Formato da sessão basic:
+
+```yaml
+basic:
+    - script_file: 
+    - server_ip: 
+    - password: 
+    - debug: 
+```
+
+* script_file - Caminho do script IOS com as configurações básicas a serem aplicadas nos roteadores.
+* server_ip - Endereço de IP do servidor GNS3 ou EVE-NG.
+* password - Senha padrão a ser aplicada nos equipamentos.
+* debug - Valor booleano para exibição dos passos em tela durante execução.
+
 
 Exemplo da sessão basic:
 
@@ -43,13 +61,6 @@ basic:
     - password: 'cisco'
     - debug: True
 ```
-
-* script_file - Caminho do script IOS com as configurações básicas a serem aplicadas nos roteadores.
-  * {%hostname%} - Coringa para a hostname do router.
-  * {%password%} - Coringa para a senha padrão do projeto.
-* server_ip - Endereço de IP do servidor GNS3 ou EVE-NG.
-* password - Senha padrão a ser aplicada nos equipamentos.
-* debug - Valor booleano para exibição dos passos em tela durante execução.
 
 ### Networks
 
@@ -63,7 +74,6 @@ networks:
             - SUBREDE/MASCARA
 ```
 
-
 * NOME_DO_ESCOPO - Nome global do escopo de rede a ser criado.
 * address - Endereço global da rede.
   * REDE - Endereço de IP global da rede.
@@ -71,6 +81,7 @@ networks:
 * subnets - Lista das sub-redes a serem calculadas dentro do escopo global.
   * SUBREDE - Nome (str) da sub-rede
   * MASCARA - Máscara (inteiro) da sub-rede.
+
 
 Exemplo de configuração:
 
@@ -128,10 +139,38 @@ routers:
         script_file: './cisco/NORTE1A.ios'
 ```
 
+## Configurações Básicas
+
+Para configuração geral, um script genérico pode ser executado nos equipamentos. Este script fica disponível no diretório `cisco\basics.ios`
+
+Nas sessões do arquivo, são aceitas duas variáveis de ambiente:
+
+* {%hostname%} - Coringa para a nome do equipamento definido na sessão Routers.
+* {%password%} - Coringa para a senha padrão do projeto, definida na sessão Basic.
+
+Exemplo do arquivo basics.ios.
+
+```ios
+enable
+conf t
+hostname {%hostname%}
+banner motd <ACCESS DENIED, THIS ATTEMPT TO ACCESS HAS BEEN RECORDED!!<
+enable secret {%password%}
+line console 0
+password {%password%}
+login
+loggin synchronous
+line vty 0 4
+password {%password%}
+login
+loggin synchronous
+service password-encryption
+no ip domain-lookup
+```
 
 ## Uso da Ferramenta
 
-Após clonar o projeto, instalar as dependências, criar e iniciar o laboratório no emulador desejado e configurar o arquivo routers.yaml, basta executar o módulo python.
+Após clonar o projeto, instalar as dependências, criar e iniciar o laboratório no emulador desejado e configurar os arquivos `basics.ios` e `routers.yaml`, basta executar o módulo python.
 
 ```sh
 $ python3.6 -m router-config
