@@ -43,13 +43,15 @@ basic:
     - script_file: 
     - server_ip: 
     - password: 
-    - debug: 
+    - debug:
+    - exit_file: 
 ```
 
 * script_file - Caminho do script IOS com as configurações básicas a serem aplicadas nos roteadores.
 * server_ip - Endereço de IP do servidor GNS3 ou EVE-NG.
 * password - Senha padrão a ser aplicada nos equipamentos.
 * debug - Valor booleano para exibição dos passos em tela durante execução.
+* exit_file - Arquivo que armazena os dados de execução.
 
 
 Exemplo da sessão basic:
@@ -60,6 +62,7 @@ basic:
     - server_ip: '192.168.0.101'
     - password: 'cisco'
     - debug: True
+    - exit_file: '/home/lucas/Documents/GitHub/router-config/exit_console.txt'
 ```
 
 ### Networks

@@ -17,11 +17,18 @@ class YamlReader:
 
         YamlReader.routers_yaml.close()
 
+
     def get_debug(self):
-        """ Retorna valor booleano de debug."""
+        """ Retorna valor booleano de basics/debug."""
 
         return self.basic[3]['debug']
+
+
+    def get_exit_file(self):
+        """ Retorna o valor de basics/exit_file."""
+
+        return self.basic[4]['exit_file']
         
 if __name__ == "__main__":
     y = YamlReader()
-    y.get_debug()
+    y.get_exit_file()

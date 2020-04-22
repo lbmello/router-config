@@ -1,4 +1,6 @@
 
+from datetime import datetime
+
 from .routerconfig import Basics
 from .routerconfig import NetworkData, Network
 from .routerconfig import Router
@@ -23,6 +25,11 @@ def create_routers():
                                             scope=conf['scope'], 
                                             script=conf['script_file']))
     return router_objects
+
+
+# Informacao com a data de execucao
+debug_mode('')
+debug_mode(f'Execução de {datetime.now()}.')
 
 # Leitura do arquivo YAML
 yaml = YamlReader()
@@ -68,10 +75,10 @@ for router in routers_objs:
         for interface in nw.interfaces:           
             if interface.full_ip == subnet.name:
 
-                debug_mode(f'ROUTER_CONFIG: Interface {interface.name} rererente ao roteador {nw.router.nome} sendo configurada')
-
                 _ip = subnet.get_ip()
                 _mask = subnet.local_mask
+
+                debug_mode(f'ROUTER_CONFIG: Interface {interface.name} rererente ao roteador {nw.router.nome} sendo configurada com o ip {_ip}')
 
                 # Configuracoes da interface de rede
                 interface.set_ip(_ip, _mask)
